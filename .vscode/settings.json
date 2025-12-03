@@ -1,0 +1,6 @@
+{
+    "python.defaultInterpreterPath": "/home/hyuksu/.cache/pypoetry/virtualenvs/fastapi-practice-N5kjcTLm-py3.12/bin/python",
+    "python.analysis.extraPaths": [
+        "/home/hyuksu/.cache/pypoetry/virtualenvs/fastapi-practice-N5kjcTLm-py3.12/lib/python3.12/site-packages"
+    ]
+}

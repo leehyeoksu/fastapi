@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>전송 성공 - FastAPI</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="card success-card">
+            <div class="success-icon">✓</div>
+            <h1>메시지가 저장되었습니다!</h1>
+
+            <div class="success-details">
+                <div class="detail-item">
+                    <span class="detail-label">ID:</span>
+                    <span class="detail-value" id="dataId">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">이름:</span>
+                    <span class="detail-value" id="dataName">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">메시지:</span>
+                    <span class="detail-value" id="dataValue">-</span>
+                </div>
+                <div class="detail-item" id="descriptionItem" style="display: none;">
+                    <span class="detail-label">설명:</span>
+                    <span class="detail-value" id="dataDescription">-</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">생성 시간:</span>
+                    <span class="detail-value" id="dataCreatedAt">-</span>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <a href="/" class="btn btn-primary">새 메시지 작성</a>
+                <a href="/docs" class="btn btn-secondary" target="_blank">API 문서 보기</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // URL에서 데이터 파라미터를 가져와서 표시
+        const urlParams = new URLSearchParams(window.location.search);
+        const dataParam = urlParams.get('data');
+
+        if (dataParam) {
+            try {
+                const data = JSON.parse(decodeURIComponent(dataParam));
+
+                document.getElementById('dataId').textContent = data.id;
+                document.getElementById('dataName').textContent = data.name;
+                document.getElementById('dataValue').textContent = data.value;
+                document.getElementById('dataCreatedAt').textContent =
+                    new Date(data.created_at).toLocaleString('ko-KR');
+
+                if (data.description) {
+                    document.getElementById('dataDescription').textContent = data.description;
+                    document.getElementById('descriptionItem').style.display = 'flex';
+                }
+            } catch (e) {
+                console.error('데이터 파싱 오류:', e);
+            }
+        }
+    </script>
+</body>
+
+</html>

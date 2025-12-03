@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메시지 입력 - FastAPI</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>✉️ 메시지 입력</h1>
+            <p class="subtitle">메시지를 입력하고 전송해보세요</p>
+            
+            <form id="messageForm">
+                <div class="form-group">
+                    <label for="name">이름</label>
+                    <input 
+                        type="text" 
+                        id="name" 
+                        name="name" 
+                        placeholder="이름을 입력하세요"
+                        required
+                    >
+                </div>
+                
+                <div class="form-group">
+                    <label for="value">메시지</label>
+                    <textarea 
+                        id="value" 
+                        name="value" 
+                        rows="4"
+                        placeholder="메시지를 입력하세요"
+                        required
+                    ></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">설명 (선택사항)</label>
+                    <input 
+                        type="text" 
+                        id="description" 
+                        name="description" 
+                        placeholder="추가 설명을 입력하세요"
+                    >
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <span class="btn-text">전송하기</span>
+                    <span class="btn-loading" style="display: none;">전송 중...</span>
+                </button>
+            </form>
+            
+            <div class="error-message" id="errorMessage"></div>
+        </div>
+        
+        <div class="footer">
+            <a href="/docs" target="_blank">📚 API 문서</a>
+        </div>
+    </div>
+    
+    <script src="/static/script.js"></script>
+</body>
+</html>
