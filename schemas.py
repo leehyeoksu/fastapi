@@ -7,7 +7,7 @@ class PromptRequest(BaseModel):
     prompt: str
     style: str
     category: Optional[str] = "Auto" # 사용자가 직접 선택한 카테고리 (기본값: 자동)
-    model: Optional[str] = "gpt-3.5-turbo" # 사용할 OpenAI 모델 (기본값: gpt-3.5-turbo)
+
 
 # 분석 결과 모델
 class AnalysisResult(BaseModel):
