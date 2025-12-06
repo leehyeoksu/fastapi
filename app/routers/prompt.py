@@ -1,34 +1,18 @@
-from fastapi import FastAPI, Depends, HTTPException
-from fastapi.responses import FileResponse
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 
-import models, schemas, service
-from database import SessionLocal, engine, get_db
+from app.models import models
+from app.schemas import schemas
+from app.services import service
+from app.database.database import get_db
 
-# 1. 데이터베이스 테이블 생성 (앱 시작 시 자동 실행)
-models.Base.metadata.create_all(bind=engine)
-
-# 2. FastAPI 앱 초기화
-app = FastAPI(
-    title="Refine AI",
-    description="AI Prompt Refinement Service",
-    version="1.0.0"
+router = APIRouter(
+    prefix="/api",
+    tags=["prompts"]
 )
 
-# 3. API 엔드포인트 정의
-
-@app.get("/")
-def read_root():
-    # UI 파일 서빙
-    return FileResponse("templates/index.html")
-
-@app.get("/my-info")
-def read_my_info():
-    # 내 정보/통계 페이지 서빙
-    return FileResponse("templates/my_info.html")
-
-@app.post("/api/refine", response_model=schemas.RefineResponse)
+@router.post("/refine", response_model=schemas.RefineResponse)
 def refine_prompt(request: schemas.PromptRequest, db: Session = Depends(get_db)):
     """
     프롬프트를 분석하고 개선합니다. 결과는 DB에 저장됩니다.
@@ -50,7 +34,7 @@ def refine_prompt(request: schemas.PromptRequest, db: Session = Depends(get_db))
     
     return result
 
-@app.get("/api/history", response_model=List[schemas.HistoryResponse])
+@router.get("/history", response_model=List[schemas.HistoryResponse])
 def get_history(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     """
     저장된 프롬프트 변환 기록을 조회합니다.
@@ -58,7 +42,7 @@ def get_history(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
     history = db.query(models.PromptHistory).order_by(models.PromptHistory.id.desc()).offset(skip).limit(limit).all()
     return history
 
-@app.get("/api/stats")
+@router.get("/stats")
 def get_stats(db: Session = Depends(get_db)):
     """
     카테고리별 사용 빈도 통계를 반환합니다.
@@ -70,7 +54,7 @@ def get_stats(db: Session = Depends(get_db)):
     # 리스트 딕셔너리로 변환 [{"category": "Coding", "count": 5}, ...]
     return [{"category": category, "count": count} for category, count in stats]
 
-@app.delete("/api/history/{history_id}")
+@router.delete("/history/{history_id}")
 def delete_history_item(history_id: int, db: Session = Depends(get_db)):
     """
     특정 히스토리 항목을 삭제합니다.
@@ -83,7 +67,7 @@ def delete_history_item(history_id: int, db: Session = Depends(get_db)):
     db.commit()
     return {"message": "Deleted successfully"}
 
-@app.delete("/api/history")
+@router.delete("/history")
 def clear_all_history(db: Session = Depends(get_db)):
     """
     모든 히스토리를 삭제합니다.
@@ -91,7 +75,3 @@ def clear_all_history(db: Session = Depends(get_db)):
     db.query(models.PromptHistory).delete()
     db.commit()
     return {"message": "All history cleared"}
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

@@ -1,6 +1,6 @@
 import json
 import openai
-from schemas import RefineResponse, AnalysisResult
+from app.schemas.schemas import RefineResponse, AnalysisResult
 
 # config.json에서 API KEY 로드
 # config.json에서 API KEY 로드

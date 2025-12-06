@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean
 from sqlalchemy.sql import func
-from database import Base
+from app.database.database import Base
 
 class PromptHistory(Base):
     __tablename__ = "prompt_history"
