@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.models import models
 from app.database.database import engine
@@ -17,6 +18,9 @@ app = FastAPI(
 
 # 3. 라우터 등록
 app.include_router(prompt.router)
+
+# 3.5 정적 파일 마운트
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # 4. 정적 파일 (UI) 서빙
 @app.get("/")
