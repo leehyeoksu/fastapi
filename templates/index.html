@@ -34,7 +34,7 @@
 
     <!-- Header -->
     <header class="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-20">
-        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <div
                     class="w-10 h-10 bg-gradient-to-br from-indigo-600 to-violet-600 rounded-xl flex items-center justify-center text-white font-bold shadow-lg shadow-indigo-200">
@@ -60,290 +60,265 @@
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <!-- MAIN -->
+    <main class="max-w-7xl mx-auto px-6 py-12 relative">
 
-        <!-- Left Column: Input (7 cols) -->
-        <div class="lg:col-span-7 space-y-8">
+        <!-- SIDE TEMPLATE BAR -->
+        <aside class="hidden lg:block absolute left-0 top-12">
             <div
-                class="bg-white p-8 rounded-3xl shadow-xl shadow-gray-100/50 border border-gray-100 relative overflow-hidden group">
-                <div
-                    class="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-full blur-3xl -mr-32 -mt-32 opacity-50 group-hover:opacity-75 transition-opacity">
-                </div>
-
-                <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-gray-800 relative z-10">
-                    <span class="text-2xl">✍️</span> 원본 프롬프트 입력
+                class="bg-white rounded-[2rem] shadow-xl shadow-indigo-50 border border-gray-100 px-4 py-5 w-44 flex flex-col gap-3">
+                <h2 class="text-sm font-bold mb-1 flex items-center gap-2 text-gray-800">
+                    <span class="text-lg">📚</span> 추천 템플릿
                 </h2>
 
-                <div class="space-y-6 relative z-10">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-2 ml-1">프롬프트 내용</label>
-                        <textarea id="promptInput" rows="6"
-                            class="w-full p-5 rounded-2xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 transition-all resize-none text-gray-700 placeholder-gray-400 text-base leading-relaxed shadow-inner"
-                            placeholder="AI에게 요청하고 싶은 내용을 자유롭게 적어주세요..."></textarea>
+                <button onclick="useTemplate('Coding')"
+                    class="w-full p-3 text-left bg-blue-50/70 hover:bg-blue-50 border border-blue-100 hover:border-blue-200 rounded-2xl transition-all text-sm text-blue-900 font-semibold flex items-center gap-2 group">
+                    <span class="text-xl group-hover:scale-110 transition-transform">💻</span>
+                    <span>코딩</span>
+                </button>
+
+                <button onclick="useTemplate('Writing')"
+                    class="w-full p-3 text-left bg-green-50/70 hover:bg-green-50 border border-green-100 hover:border-green-200 rounded-2xl transition-all text-sm text-green-900 font-semibold flex items-center gap-2 group">
+                    <span class="text-xl group-hover:scale-110 transition-transform">📝</span>
+                    <span>글쓰기</span>
+                </button>
+
+                <button onclick="useTemplate('Image')"
+                    class="w-full p-3 text-left bg-purple-50/70 hover:bg-purple-50 border border-purple-100 hover:border-purple-200 rounded-2xl transition-all text-sm text-purple-900 font-semibold flex items-center gap-2 group">
+                    <span class="text-xl group-hover:scale-110 transition-transform">🎨</span>
+                    <span>이미지 생성</span>
+                </button>
+
+                <button onclick="useTemplate('Data')"
+                    class="w-full p-3 text-left bg-orange-50/70 hover:bg-orange-50 border border-orange-100 hover:border-orange-200 rounded-2xl transition-all text-sm text-orange-900 font-semibold flex items-center gap-2 group">
+                    <span class="text-xl group-hover:scale-110 transition-transform">📊</span>
+                    <span>데이터 분석</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- GRID -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:pl-52 items-start">
+
+            <!-- LEFT: 프롬프트 입력 -->
+            <div class="lg:col-span-8 space-y-8">
+                <div
+                    class="bg-white p-8 rounded-3xl shadow-xl shadow-gray-100/50 border border-gray-100 relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-full blur-3xl -mr-32 -mt-32 opacity-50">
                     </div>
 
-                    <div class="grid grid-cols-2 gap-5">
+                    <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-gray-800">
+                        <span class="text-2xl">✍️</span> 원본 프롬프트 입력
+                    </h2>
+
+                    <div class="space-y-6">
                         <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2 ml-1">톤앤매너 (Style)</label>
-                            <div class="relative">
-                                <select id="styleInput"
-                                    class="w-full p-4 rounded-xl border border-gray-200 bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 appearance-none cursor-pointer transition-shadow shadow-sm hover:border-indigo-300">
-                                    <option value="Professional">👔 Professional (전문적인)</option>
-                                    <option value="Academic">🎓 Academic (학술적인)</option>
-                                    <option value="Creative">🎨 Creative (창의적인)</option>
-                                </select>
-                                <div
-                                    class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clip-rule="evenodd" />
-                                    </svg>
+                            <label class="block text-sm font-semibold text-gray-700 mb-2 ml-1">프롬프트 내용</label>
+                            <textarea id="promptInput" rows="8"
+                                class="w-full p-5 rounded-2xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 transition-all resize-none text-gray-700 placeholder-gray-400 text-base leading-relaxed shadow-inner"
+                                placeholder="AI에게 요청하고 싶은 내용을 자유롭게 적어주세요..."></textarea>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-5">
+                            <!-- STYLE SELECT (롤백된 디자인) -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2 ml-1">톤앤매너 (Style)</label>
+                                <div class="relative">
+                                    <select id="styleInput"
+                                        class="block w-full appearance-none rounded-2xl border border-gray-200 bg-white py-4 pl-4 pr-10 text-base font-medium text-gray-800 shadow-sm focus:outline-none focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 cursor-pointer">
+                                        <option value="Professional">👔 Professional (전문적인)</option>
+                                        <option value="Academic">🎓 Academic (학술적인)</option>
+                                        <option value="Creative">🎨 Creative (창의적인)</option>
+                                    </select>
+                                    <span
+                                        class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-gray-400">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- CATEGORY SELECT (롤백된 디자인) -->
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2 ml-1">질문 종류 (Category)</label>
+                                <div class="relative">
+                                    <select id="categoryInput"
+                                        class="block w-full appearance-none rounded-2xl border border-gray-200 bg-white py-4 pl-4 pr-10 text-base font-medium text-gray-800 shadow-sm focus:outline-none focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 cursor-pointer">
+                                        <option value="Auto">🤖 Auto (AI 자동 판단)</option>
+                                        <option value="Coding">💻 Coding (코딩/개발)</option>
+                                        <option value="Math">Math (수학/논리)</option>
+                                        <option value="Writing">📝 Writing (글쓰기/교정)</option>
+                                        <option value="Knowledge">📚 Knowledge (사전지식/설명)</option>
+                                        <option value="Image">🎨 Image (이미지 생성)</option>
+                                        <option value="Data">📊 Data (데이터 분석)</option>
+                                    </select>
+                                    <span
+                                        class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-gray-400">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-2 ml-1">질문 종류 (Category)</label>
-                            <div class="relative">
-                                <select id="categoryInput"
-                                    class="w-full p-4 rounded-xl border border-gray-200 bg-white focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 appearance-none cursor-pointer transition-shadow shadow-sm hover:border-indigo-300">
-                                    <option value="Auto">🤖 Auto (AI 자동 판단)</option>
-                                    <option value="Coding">💻 Coding (코딩/개발)</option>
-                                    <option value="Math">Math (수학/논리)</option>
-                                    <option value="Writing">📝 Writing (글쓰기/교정)</option>
-                                    <option value="Knowledge">📚 Knowledge (사전지식/설명)</option>
-                                    <option value="Image">🎨 Image (이미지 생성)</option>
-                                    <option value="Data">📊 Data (데이터 분석)</option>
-                                </select>
-                                <div
-                                    class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
 
+                        <button onclick="refinePrompt()" id="refineBtn"
+                            class="w-full py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-bold text-lg rounded-xl shadow-xl shadow-indigo-200 transition-all transform hover:-translate-y-1 active:scale-95 flex justify-center items-center gap-2">
+                            <span>✨ AI로 완벽하게 개선하기</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- AI MODEL SECTION -->
+                <div class="bg-white p-8 rounded-3xl shadow-lg border border-gray-100">
+                    <h2 class="text-lg font-bold mb-5 flex items-center gap-2 text-gray-800">
+                        <span class="text-xl">🤖</span> AI 모델 이동
+                    </h2>
+
+                    <div class="grid grid-cols-3 gap-4">
+                        <a href="https://gemini.google.com" target="_blank"
+                            class="group flex flex-col items-center p-4 border border-gray-200 rounded-2xl hover:border-indigo-300 hover:bg-indigo-50/50 transition-all">
+                            <img src="/static/images/gemini_logo.png" class="w-12 h-12 mb-3" alt="Gemini">
+                            <span class="font-semibold text-gray-700 group-hover:text-indigo-600 text-sm">Gemini</span>
+                        </a>
+
+                        <a href="https://chatgpt.com" target="_blank"
+                            class="group flex flex-col items-center p-4 border border-gray-200 rounded-2xl hover:border-green-300 hover:bg-green-50/50 transition-all">
+                            <img src="/static/images/gpt_logo.png" class="w-12 h-12 mb-3" alt="ChatGPT">
+                            <span class="font-semibold text-gray-700 group-hover:text-green-600 text-sm">ChatGPT</span>
+                        </a>
+
+                        <a href="https://x.ai" target="_blank"
+                            class="group flex flex-col items-center p-4 border border-gray-200 rounded-2xl hover:border-gray-400 hover:bg-gray-50 transition-all">
+                            <img src="/static/images/grok_logo.png" class="w-12 h-12 mb-3" alt="Grok">
+                            <span class="font-semibold text-gray-700 group-hover:text-gray-900 text-sm">Grok</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT: 결과 -->
+            <div class="lg:col-span-4 space-y-8">
+
+                <!-- RESULT CARD -->
+                <div id="resultCard"
+                    class="hidden bg-white p-8 rounded-3xl shadow-2xl border border-indigo-50 fade-in relative overflow-hidden min-h-[560px]">
+                    <div class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"></div>
+
+                    <h2 class="text-xl font-bold mb-6 text-indigo-900 flex items-center gap-2">
+                        <span class="text-2xl">🚀</span> 개선된 프롬프트
+                    </h2>
+
+                    <div class="bg-indigo-50/60 p-6 rounded-2xl border border-indigo-100 mb-6 relative">
+                        <pre id="refinedOutput"
+                            class="whitespace-pre-wrap text-gray-800 font-medium text-base leading-relaxed"></pre>
+                        <button onclick="copyToClipboard()"
+                            class="absolute top-3 right-3 bg-white/80 p-2 rounded-lg text-xs font-bold text-indigo-600 border border-indigo-100 hover:scale-105 transition-all">
+                            복사
+                        </button>
                     </div>
 
-                    <button onclick="refinePrompt()" id="refineBtn"
-                        class="w-full py-4 bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-700 hover:to-violet-700 text-white font-bold text-lg rounded-xl shadow-xl shadow-indigo-200 transition-all transform hover:-translate-y-1 active:scale-95 flex justify-center items-center gap-2">
-                        <span>✨ AI로 완벽하게 개선하기</span>
-                    </button>
-                </div>
-            </div>
+                    <div class="flex flex-wrap gap-2 mb-8" id="analysisTags"></div>
 
-            <!-- AI Model Selection Section -->
-            <div class="bg-white p-8 rounded-3xl shadow-lg shadow-gray-100/50 border border-gray-100">
-                <h2 class="text-lg font-bold mb-5 flex items-center gap-2 text-gray-800">
-                    <span class="text-xl">🤖</span> AI 모델 선택
-                </h2>
-                <div class="grid grid-cols-3 gap-4">
-                    <!-- Gemini -->
-                    <a href="https://gemini.google.com" target="_blank"
-                        class="group flex flex-col items-center justify-center p-4 border border-gray-200 rounded-2xl hover:border-indigo-300 hover:bg-indigo-50/50 transition-all cursor-pointer">
-                        <div
-                            class="w-12 h-12 mb-3 bg-white rounded-full p-2 shadow-sm group-hover:scale-110 transition-transform flex items-center justify-center">
-                            <img src="/static/images/gemini_logo.png" alt="Gemini" class="w-full h-full object-contain">
-                        </div>
-                        <span class="font-semibold text-gray-700 text-sm group-hover:text-indigo-600">Gemini</span>
-                    </a>
-                    <!-- GPT -->
-                    <a href="https://chatgpt.com" target="_blank"
-                        class="group flex flex-col items-center justify-center p-4 border border-gray-200 rounded-2xl hover:border-green-300 hover:bg-green-50/50 transition-all cursor-pointer">
-                        <div
-                            class="w-12 h-12 mb-3 bg-white rounded-full p-2 shadow-sm group-hover:scale-110 transition-transform flex items-center justify-center">
-                            <img src="/static/images/gpt_logo.png" alt="GPT" class="w-full h-full object-contain">
-                        </div>
-                        <span class="font-semibold text-gray-700 text-sm group-hover:text-green-600">ChatGPT</span>
-                    </a>
-                    <!-- Grok -->
-                    <a href="https://x.ai" target="_blank"
-                        class="group flex flex-col items-center justify-center p-4 border border-gray-200 rounded-2xl hover:border-gray-400 hover:bg-gray-50 transition-all cursor-pointer">
-                        <div
-                            class="w-12 h-12 mb-3 bg-white rounded-full p-2 shadow-sm group-hover:scale-110 transition-transform flex items-center justify-center">
-                            <img src="/static/images/grok_logo.png" alt="Grok" class="w-full h-full object-contain">
-                        </div>
-                        <span class="font-semibold text-gray-700 text-sm group-hover:text-gray-900">Grok</span>
-                    </a>
+                    <div class="bg-yellow-50 p-6 rounded-2xl border border-yellow-100">
+                        <h3 class="text-sm font-bold text-yellow-900 mb-3 flex items-center gap-2">
+                            <span class="text-lg">💡</span> AI의 조언
+                        </h3>
+                        <ul id="tipsList" class="text-sm text-yellow-800 space-y-2 list-disc list-inside"></ul>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Template Library Section -->
-            <div class="bg-white p-8 rounded-3xl shadow-lg shadow-gray-100/50 border border-gray-100">
-                <h2 class="text-lg font-bold mb-5 flex items-center gap-2 text-gray-800">
-                    <span class="text-xl">📚</span> 추천 템플릿
-                </h2>
-                <div class="grid grid-cols-2 gap-3">
-                    <button onclick="useTemplate('Coding')"
-                        class="p-4 text-left bg-blue-50/50 hover:bg-blue-50 border border-blue-100 hover:border-blue-200 rounded-2xl transition-all text-sm text-blue-900 font-semibold group">
-                        <span
-                            class="block text-xl mb-1 group-hover:scale-110 transition-transform origin-left">💻</span>
-                        코딩 (Python, JS)
-                    </button>
-                    <button onclick="useTemplate('Writing')"
-                        class="p-4 text-left bg-green-50/50 hover:bg-green-50 border border-green-100 hover:border-green-200 rounded-2xl transition-all text-sm text-green-900 font-semibold group">
-                        <span
-                            class="block text-xl mb-1 group-hover:scale-110 transition-transform origin-left">📝</span>
-                        글쓰기 (블로그, 이메일)
-                    </button>
-                    <button onclick="useTemplate('Image')"
-                        class="p-4 text-left bg-purple-50/50 hover:bg-purple-50 border border-purple-100 hover:border-purple-200 rounded-2xl transition-all text-sm text-purple-900 font-semibold group">
-                        <span
-                            class="block text-xl mb-1 group-hover:scale-110 transition-transform origin-left">🎨</span>
-                        이미지 생성 (Midjourney)
-                    </button>
-                    <button onclick="useTemplate('Data')"
-                        class="p-4 text-left bg-orange-50/50 hover:bg-orange-50 border border-orange-100 hover:border-orange-200 rounded-2xl transition-all text-sm text-orange-900 font-semibold group">
-                        <span
-                            class="block text-xl mb-1 group-hover:scale-110 transition-transform origin-left">📊</span>
-                        데이터 분석 (Pandas)
-                    </button>
+                <!-- EMPTY STATE -->
+                <div id="emptyState"
+                    class="flex flex-col items-center justify-center text-center py-20 text-gray-400 bg-white/50 rounded-3xl border border-dashed border-gray-200 min-h-[560px]">
+                    <div class="text-7xl mb-6 opacity-50">🔮</div>
+                    <p class="text-xl font-semibold text-gray-500 mb-2">마법같은 변화를 경험하세요</p>
+                    <p class="text-sm text-gray-400">왼쪽에 프롬프트를 입력하고<br>개선하기 버튼을 눌러보세요.</p>
                 </div>
             </div>
         </div>
-
-        <!-- Right Column: Result (5 cols) -->
-        <div class="lg:col-span-5 space-y-8">
-            <div id="resultCard"
-                class="hidden bg-white p-8 rounded-3xl shadow-2xl shadow-indigo-100 border border-indigo-50 fade-in relative overflow-hidden">
-                <div
-                    class="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-                </div>
-
-                <h2 class="text-xl font-bold mb-6 text-indigo-900 flex items-center gap-2">
-                    <span class="text-2xl">🚀</span> 개선된 프롬프트
-                </h2>
-
-                <div
-                    class="bg-gradient-to-br from-indigo-50 to-white p-6 rounded-2xl border border-indigo-100 mb-6 relative group shadow-inner">
-                    <pre id="refinedOutput"
-                        class="whitespace-pre-wrap text-gray-800 font-medium text-base leading-relaxed font-sans"></pre>
-                    <button onclick="copyToClipboard()"
-                        class="absolute top-3 right-3 bg-white/80 backdrop-blur p-2 rounded-lg shadow-sm opacity-0 group-hover:opacity-100 transition-all hover:bg-white text-xs font-bold text-indigo-600 border border-indigo-100 hover:scale-105">
-                        복사
-                    </button>
-                </div>
-
-                <!-- Analysis Tags -->
-                <div class="flex flex-wrap gap-2 mb-8" id="analysisTags">
-                    <!-- Tags will be injected here -->
-                </div>
-
-                <!-- Tips -->
-                <div class="bg-yellow-50/80 p-6 rounded-2xl border border-yellow-100">
-                    <h3 class="text-sm font-bold text-yellow-900 mb-3 flex items-center gap-2">
-                        <span class="text-lg">💡</span> AI의 조언
-                    </h3>
-                    <ul id="tipsList"
-                        class="text-sm text-yellow-800 space-y-2 list-disc list-inside marker:text-yellow-500">
-                        <!-- Tips will be injected here -->
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Empty State -->
-            <div id="emptyState"
-                class="flex flex-col items-center justify-center h-full text-center py-20 text-gray-400 bg-white/50 rounded-3xl border border-dashed border-gray-200">
-                <div class="text-7xl mb-6 animate-pulse grayscale opacity-50">🔮</div>
-                <p class="text-xl font-semibold text-gray-500 mb-2">마법같은 변화를 경험하세요</p>
-                <p class="text-sm text-gray-400">왼쪽에 프롬프트를 입력하고<br>개선하기 버튼을 눌러보세요.</p>
-            </div>
-        </div>
-
     </main>
 
+    <!-- SCRIPTS -->
     <script>
-        // API 호출 함수
         async function refinePrompt() {
-            const prompt = document.getElementById('promptInput').value;
-            const style = document.getElementById('styleInput').value;
-            const btn = document.getElementById('refineBtn');
+            const prompt = document.getElementById("promptInput").value;
+            const style = document.getElementById("styleInput").value;
+            const category = document.getElementById("categoryInput").value;
+            const btn = document.getElementById("refineBtn");
 
             if (!prompt.trim()) {
                 alert("프롬프트를 입력해주세요!");
                 return;
             }
 
-            // 로딩 상태
-            btn.innerHTML = `<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> 분석 중...`;
             btn.disabled = true;
+            btn.innerHTML = `⏳ 분석 중...`;
 
             try {
-                const response = await fetch('/api/refine', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        prompt: prompt,
-                        style: style,
-                        category: document.getElementById('categoryInput').value
-                    })
+                const response = await fetch("/api/refine", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ prompt, style, category }),
                 });
-                const data = await response.json();
 
-                // 결과 표시
+                const data = await response.json();
                 showResult(data);
 
-            } catch (error) {
-                alert("오류가 발생했습니다: " + error);
-            } finally {
-                btn.innerHTML = `<span>✨ AI로 개선하기</span>`;
-                btn.disabled = false;
+            } catch (err) {
+                alert("오류 발생: " + err);
             }
+
+            btn.disabled = false;
+            btn.innerHTML = `✨ AI로 완벽하게 개선하기`;
         }
 
         function showResult(data) {
-            document.getElementById('emptyState').classList.add('hidden');
-            document.getElementById('resultCard').classList.remove('hidden');
+            document.getElementById("emptyState").classList.add("hidden");
+            document.getElementById("resultCard").classList.remove("hidden");
 
-            // 1. 개선된 프롬프트
-            document.getElementById('refinedOutput').textContent = data.refined_prompt;
+            document.getElementById("refinedOutput").textContent = data.refined_prompt;
 
-            // 2. 분석 태그
-            const tagsContainer = document.getElementById('analysisTags');
-            tagsContainer.innerHTML = '';
-            if (data.analysis.missing_context) {
-                tagsContainer.innerHTML += `<span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold">맥락 부족 감지</span>`;
-            }
-            if (data.analysis.missing_format) {
-                tagsContainer.innerHTML += `<span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-semibold">형식 미지정</span>`;
-            }
-            tagsContainer.innerHTML += `<span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">완료</span>`;
+            const tagBox = document.getElementById("analysisTags");
+            tagBox.innerHTML = "";
+            if (data.analysis.missing_context)
+                tagBox.innerHTML += `<span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-semibold">맥락 부족</span>`;
+            if (data.analysis.missing_format)
+                tagBox.innerHTML += `<span class="px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-xs font-semibold">형식 미지정</span>`;
+            tagBox.innerHTML += `<span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">완료</span>`;
 
-            // 3. 팁
-            const tipsList = document.getElementById('tipsList');
-            tipsList.innerHTML = '';
+            const tipList = document.getElementById("tipsList");
+            tipList.innerHTML = "";
             data.tips.forEach(tip => {
-                tipsList.innerHTML += `<li>${tip}</li>`;
+                tipList.innerHTML += `<li>${tip}</li>`;
             });
         }
 
         function copyToClipboard() {
-            const text = document.getElementById('refinedOutput').textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                alert("복사되었습니다!");
-            });
+            navigator.clipboard.writeText(
+                document.getElementById("refinedOutput").textContent
+            );
+            alert("복사되었습니다!");
         }
 
         function useTemplate(type) {
             const templates = {
-                'Coding': "파이썬으로 웹 크롤링하는 코드 짜줘. BeautifulSoup 써서.",
-                'Writing': "신입 개발자 지원 동기서 작성해줘. 열정적인 톤으로.",
-                'Image': "사이버펑크 스타일의 미래 도시 야경 그려줘. 네온 사인 가득하게.",
-                'Data': "Pandas로 CSV 파일 읽어서 결측치 처리하는 방법 알려줘."
+                Coding: "파이썬으로 웹 크롤링하는 코드 짜줘. BeautifulSoup 써서.",
+                Writing: "신입 개발자 지원 동기서 작성해줘. 자연스럽고 진솔한 느낌으로.",
+                Image: "사이버펑크 스타일의 미래 도시 야경 프롬프트 작성해줘.",
+                Data: "Pandas로 CSV 결측치 처리하는 방법 알려줘."
             };
-            document.getElementById('promptInput').value = templates[type];
-            // 효과: 입력창 깜빡임
-            const input = document.getElementById('promptInput');
-            input.focus();
-            input.classList.add('ring-2', 'ring-indigo-500');
-            setTimeout(() => input.classList.remove('ring-2', 'ring-indigo-500'), 500);
+
+            document.getElementById("promptInput").value = templates[type];
         }
     </script>
+
 </body>
 
 </html>
